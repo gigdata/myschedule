@@ -4,6 +4,10 @@
 	<artifactId>myschedule-package</artifactId>
 	<packaging>pom</packaging>
 
+	<properties>
+		<spring.version>3.0.5.RELEASE</spring.version>
+	</properties>
+	
 	<parent>
 		<groupId>myschedule</groupId>
 		<artifactId>myschedule</artifactId>
