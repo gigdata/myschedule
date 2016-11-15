@@ -1,0 +1,57 @@
+Max AAA authentication attempts exceeded for client ==Max AAA authentication attempts exceeded for client %02x:%02x:%02x:%02x:%02x:%02x
+All export anchors are down. Cannot anchor the client==All export anchors are down. Cannot anchor the client. %02x:%02x:%02x:%02x:%02x:%02x
+All Export-Anchors are down on WLAN ==All Export-Anchors are down on WLAN %d
+Free System Memory went below 100MB ==Free System Memory went below 100MB
+Out of system memory ==%s,Out of system memory
+Failed to allocate memory for==Failed to allocate memory for %d bytes.
+AP certificate time ==AP certificate time %s - %s is not valid.
+is being contained on slot==AP %s is being contained on slot %d
+Warning! Task==Warning! Task %d (%s) is taking %d%% (%d%% user %d%% system)of the cpu!.
+Attempt to insert PMK to the key cache failed.==Attempt to insert PMK to the key cache failed. %s. Length: %d. Station:%02x:%02x:%02x:%02x:%02x:%02x . Cache size reached %d
+Failed to get DHCP response on interface==Failed to get DHCP response on interface '%s'. Marking interface dirty.
+Max authentication attempts exceeded for client ==Max authentication attempts exceeded for client %02x:%02x:%02x:%02x:%02x:%02x
+Error - DP Final Memory Leak Detected : DP==Error - DP Final Memory Leak Detected : DP%d PktLevel %d MemLeakCount %d
+Fastpath DP==Fastpath DP%d (core %d) reports a crash.
+Error - DP Memory Leak Detected : DP==Error - DP Memory Leak Detected : DP%d PktLevel %d MemLeakCount %d
+System reboot shortly: Missed too many heartbeats==System reboot shortly: Missed too many heartbeats (%d) from Fastpath DP%d.
+System reboot shortly: Fastpath DP==System reboot shortly: Fastpath DP%d failed to come UP.
+Heartbeat miss: Reading DP==Heartbeat miss: Reading DP%d crash information.
+SNMP Queue full. Dropping ==SNMP Queue full. Dropping %s trap
+Export FOREIGN ==Export FOREIGN %u.%u.%u.%u is detected as DOWN. Status:%d. Cleaning up client entries.
+All Export-Anchors are down on Guest LAN==All Export-Anchors are down on Guest LAN %d
+Warning! System free memory ==Warning! System free memory (%d) below high threshold.
+path to mobility member ==%s path to mobility member %s is DOWN.
+Unable to find 802.1X interface for AP ==Unable to find 802.1X interface for AP %02x:%02x:%02x:%02x:%02x:%02x
+IP conflict is detected==Network device with mac addr %02x:%02x:%02x:%02x:%02x:%02x using IP address of local interface '%s'. %u.%u.%u.%u - Received ARP %s on interface %u with vlan ID %u. IP conflict is detected
+Registering IP on mscb failed for station ==Registering IP on mscb failed for station %02x:%02x:%02x:%02x:%02x:%02x
+The system has received a join request from AP ==The system has received a join request from AP %02x:%02x:%02x:%02x:%02x:%02x - reached limit for maximum APs %d/%d, dropping the packet
+System is rebooting in 5 seconds: lost heartbeat from environmental controller==System is rebooting in 5 seconds: lost heartbeat from environmental controller
+List is corrupted - ==List is corrupted - (head %p, tail %p, count %u)
+Skipping duplicate insertion - ==Skipping duplicate insertion - ( head %p, tail %p, count %u, entry %p)
+not in the list - ==Entry %p not in the list - (%p, head %p, tail %p)
+Number of Associated clients has reached ==Number of Associated clients has reached %d%% (%d) of the maximum supported.
+Max EAP retransmissions exceeded for client==Max EAP retransmissions exceeded for client %02x:%02x:%02x:%02x:%02x:%02x
+Max EAP identity request retries ==Max EAP identity request retries (%u) exceeded for client %02x:%02x:%02x:%02x:%02x:%02x
+Max EAPOL-key M==Max EAPOL-key M%u retransmissions exceeded for client %02x:%02x:%02x:%02x:%02x:%02x
+Total system memory ==Unable to allocate %ld bytes, reason %s. Total system memory %llu bytes, free memory %llu bytes.
+Unable to allocate memory==Unable to allocate memory %s
+Memory threshold reached. Not allocating memory.==Memory threshold reached. Not allocating memory.
+path to mobility member ==%s path to mobility member %u.%u.%u.%u is DOWN.
+Unable to add mobile ==Unable to add mobile %02x:%02x:%02x:%02x:%02x:%02x to PEM module.
+Could not create Mobile Station Entry==Could not create Mobile Station Entry. %s. Mobile: %02x:%02x:%02x:%02x:%02x:%02x, Type: %s. Mobile rejected.
+task could not be started. The system will be rebooted==%s task could not be started. The system will be rebooted
+while setting local moblity group multicast IP Address==Error in %s while setting local moblity group multicast IP Address %u.%u.%u.%u. Please disable mobility multicast-mode if this error continues.
+Failed to create a mutual exclusion object==Failed to create a mutual exclusion object. %s.
+cdp queue is full.==cdp queue is full.
+The available free RAM memory:==The available free RAM memory:%d MB.
+System is rebooting, reason: ==System is rebooting, reason: %s
+Could not send a Client Association response to ==Could not send a Client Association response to %02x:%02x:%02x:%02x:%02x:%02x. %s.
+Could not send client association request. ==Could not send client association request. %s.
+Unable to send DHCP packet to ==Unable to send DHCP packet to %02x:%02x:%02x:%02x:%02x:%02x.
+Shuting down due to ==Shuting down due to %s
+is attempting to register one of our own IP addresses.==Station %02x:%02x:%02x:%02x:%02x:%02x connected to AP %02x:%02x:%02x:%02x:%02x:%02x on port %d is attempting to register one of our own IP addresses.
+Internal temperature overheat warning at==Internal temperature overheat warning at %d(C).
+Internal temperature low warning at==Internal temperature low warning at %d(C).
+TACACS+ server switchover failed as there is no other server active. Current server is==TACACS+ server switchover failed as there is no other server active. Current server is %s (port:%d)
+Unable to allocate memory for tunnel data in mscb for client ==Out of memory! Unable to allocate memory for tunnel data in mscb for client %02x:%02x:%02x:%02x:%02x:%02x.
+Authentication rejected for user==Authentication rejected for user %s - max number of users (%u) exceeded

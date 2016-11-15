@@ -1,0 +1,56 @@
+<table align="center" style="border: 2px solid #000000;" cellpadding="0" cellspacing="0" width="800">
+	<tbody>
+		<tr>
+			<td></td>
+		</tr>
+		<tr>
+			<td
+				style="border-left: rgb(153, 153, 153) 1.0px solid; line-height: 18.0px; font-family: arial, helvetica, sans-serif; background: rgb(255, 255, 255); color: rgb(102, 102, 102); font-size: 12.0px; border-right: rgb(153, 153, 153) 1.0px solid">
+				<table border="0" cellpadding="0" cellspacing="0" width="90%">
+					<tbody>
+						<tr>
+							<td align="left"
+								style="padding-bottom: 25.0px; line-height: normal; padding-left: 25.0px; font-family: arial, helvetica, sans-serif; padding-top: 15.0px; color: rgb(0, 150, 214); font-size: 22.0px">
+								WLC String Occurrences Count Report</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td
+				style="border-left: rgb(153, 153, 153) 1.0px solid; background-color: rgb(255, 255, 255); padding-left: 25.0px; padding-right: 25.0px; border-right: rgb(153, 153, 153) 1.0px solid">
+				<div th:switch="${isAvailable}"> 
+					<p th:case="'true'">
+						<font color="#666666" face="arial, helvetica, sans-serif"><span	style="line-height: 18.0px"> 
+						The following is the report of the syslog string occurrences in the past one hour:
+						<table border="1" align="center" style="font-family: arial, sans-serif; border-collapse: collapse; width: 85%;">
+							<tr>
+								<th	style="text-align: left; color: rgb(0, 150, 214); background-color: #dddddd;">
+									String Type</th>
+								<th	style="text-align: center; color: rgb(0, 150, 214); background-color: #dddddd;">
+									Total Count</th>
+							</tr>
+							<tr th:each="element : ${countMap}">
+								<td th:text="${element.key}"></td>
+								<td th:text="${element.value}"></td>
+							</tr>
+						</table>
+						<br/><br/>
+						</span></font>
+					</p>
+					<p th:case="*">
+						<font color="#666666" face="arial, helvetica, sans-serif"><span	style="line-height: 18.0px">
+						<i><strong>There was no syslog string occurrences in the past one hour.</strong></i>
+						</span></font>
+					</p>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td align="right"
+				style="border-left: rgb(153, 153, 153) 1.0px solid; line-height: 18.0px; padding-left: 25.0px; padding-right: 25.0px; font-family: arial, helvetica, sans-serif; background: rgb(255, 255, 255); color: rgb(102, 102, 102); font-size: 12.0px; border-right: rgb(153, 153, 153) 1.0px solid">
+			</td>
+		</tr>
+	</tbody>
+</table>

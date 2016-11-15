@@ -2,21 +2,10 @@ package myschedule.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.regex.PatternSyntaxException;
 
 import javax.ws.rs.DefaultValue;
-
-import myschedule.quartz.extra.SchedulerTemplate;
-import myschedule.rest.domain.JobSchedulingInfo;
-import myschedule.rest.domain.RunTimeJobDetail;
-import myschedule.rest.domain.ScheduleInfo;
-import myschedule.rest.exception.BadCronExpressionException;
-import myschedule.rest.exception.JobAlreadyExistsException;
-import myschedule.rest.exception.WebException;
-import myschedule.rest.util.JobHelper;
-import myschedule.rest.util.ResponseBuilder;
-import myschedule.rest.util.SchedulerHelper;
-import myschedule.web.MySchedule;
 
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -32,6 +21,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import myschedule.quartz.extra.SchedulerTemplate;
+import myschedule.rest.domain.JobSchedulingInfo;
+import myschedule.rest.domain.RunTimeJobDetail;
+import myschedule.rest.domain.ScheduleInfo;
+import myschedule.rest.exception.BadCronExpressionException;
+import myschedule.rest.exception.JobAlreadyExistsException;
+import myschedule.rest.exception.WebException;
+import myschedule.rest.util.JobDetailSerializer;
+import myschedule.rest.util.JobHelper;
+import myschedule.rest.util.ResponseBuilder;
+import myschedule.rest.util.SchedulerHelper;
+import myschedule.web.MySchedule;
 
 
 @Controller
@@ -43,6 +46,12 @@ public class JobSchedulingController extends BaseController {
 		MySchedule sch = MySchedule.getInstance();
 		Gson gson = new Gson();
 		return gson.toJson(sch.getSchedulerSettingsNames()); 
+	}
+	
+	@RequestMapping(value = "/gettimezone", method = RequestMethod.GET)
+	@ResponseBody
+	public String getTimeZone() {
+		return "{\"timezone\": \"" + TimeZone.getDefault().getID() + "\"}";
 	}
 	
 	@RequestMapping(value = "/{sid}", method = RequestMethod.GET)
@@ -87,20 +96,35 @@ public class JobSchedulingController extends BaseController {
 	 */
 	@RequestMapping(value = "/jobs/schedulejob", method = RequestMethod.POST)
 	public @ResponseBody  String scheduleJob(@RequestBody  JobSchedulingInfo jobSchedulingInfo) throws ClassNotFoundException, JobAlreadyExistsException, SchedulerException {
-        try {
+		
+		JobSchedulingInfo jsi = new JobSchedulingInfo();
+		jsi = jobSchedulingInfo;
+
+		try {
+			
+			/**
+			 * Need to create a serializer because Gson wouldn't serialize JobInfo correctly;
+			 * The variable jobClass of type Class throws an unserializable exception 
+			 * Serializer written in JobDetailSerializer
+			 * @tfuntani
+			 */
+			GsonBuilder gsonBuilder = new GsonBuilder();
+	        gsonBuilder.registerTypeAdapter(Class.class, new JobDetailSerializer());
+	        Gson gson = gsonBuilder.create();
+	        
+			//Gson gson = new Gson();
+        	RunTimeJobDetail jobdetails = scheduler().scheduleJob(JobHelper.buildJobDetail(jsi.getJobInfo()), 
+        			JobHelper.buildTrigger(jsi.getScheduleInfo().getTriggerInfo(), JobHelper.buildSchedulerBuilder(jsi.getScheduleInfo())));
         	
-        	Gson gson = new Gson();
-        		 RunTimeJobDetail jobdetails = scheduler().scheduleJob(JobHelper.buildJobDetail(jobSchedulingInfo.getJobInfo()),
-                    JobHelper.buildTrigger(jobSchedulingInfo.getScheduleInfo().getTriggerInfo(),
-                            JobHelper.buildSchedulerBuilder(jobSchedulingInfo.getScheduleInfo())));
-   		 
-   		 return gson.toJson(jobdetails);
-        } catch (BadCronExpressionException e) {
-            try {
+        	return gson.toJson(jobdetails);
+        
+		} catch (BadCronExpressionException e) {
+			try {
 				throw new WebException();
 			} catch (WebException e1) {
 							e1.printStackTrace();
 			}
+
           //  return ResponseBuilder.badRequest(e.getLocalizedMessage());
         }
 		return "BAD_REQUEST: Failed to schedule a Job";
@@ -112,7 +136,8 @@ public class JobSchedulingController extends BaseController {
 	 * @return
 	 * @throws SchedulerException
 	 */
-	@RequestMapping(value = "/{sid}/job/{jid}", method = RequestMethod.GET)
+	// TODO: Redo this method, since jobExistsOrException accepts jobName and jobGroup as parameters not {sid} and {jid}
+/*	@RequestMapping(value = "/{sid}/job/{jid}", method = RequestMethod.GET)
 	public @ResponseBody String getJobInfo(@PathVariable("sid") String sid, @PathVariable("jid") String jid) throws SchedulerException {
 
 		RunTimeJobDetail runTimeJobDetail = jobExistsOrException(sid, jid);
@@ -121,7 +146,7 @@ public class JobSchedulingController extends BaseController {
 		System.out.println(json);
 
 		return json;
-	}
+	}*/
 
 	/**
 	 * @param group
@@ -235,8 +260,10 @@ public class JobSchedulingController extends BaseController {
         
 		List<String> response = new ArrayList<String>();
 		try{
-			Gson gson = new Gson();
-			
+			GsonBuilder gsonBuilder = new GsonBuilder();
+	        gsonBuilder.registerTypeAdapter(Class.class, new JobDetailSerializer());
+	        Gson gson = gsonBuilder.create();
+	        
 			List<RunTimeJobDetail> list = scheduler().searchJobs(groupExp, nameExp);
 			for (RunTimeJobDetail job : list){
 				String json = gson.toJson(job);
@@ -266,10 +293,12 @@ public class JobSchedulingController extends BaseController {
         return ResponseBuilder.response("OK", "[ All jobs are deleted successfully]");
     }
 
-    private RunTimeJobDetail jobExistsOrException(String sid, String jid) throws SchedulerException {
+    private RunTimeJobDetail jobExistsOrException(String jobGroup, String jobName) throws SchedulerException {
      
-    	SchedulerHelper schedulerHelper = scheduler(sid);
-    	RunTimeJobDetail runTimeJobDetail = schedulerHelper.getJobDetails(sid, jid);
+    	// TODO: This assumes all schedules are saved to the default scheduler
+    	// Need a way to pass {sid} of job and use it to create instance of schedulerHelper
+    	SchedulerHelper schedulerHelper = scheduler();
+    	RunTimeJobDetail runTimeJobDetail = schedulerHelper.getJobDetails(jobGroup, jobName);
         if(runTimeJobDetail == null){
         	try {
 				throw new WebException("Unable to find fobs.");
